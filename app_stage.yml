@@ -1,6 +1,6 @@
 ---
 
-- hosts: db
+- hosts: deb
 
   become: yes
   become_method: sudo
@@ -23,7 +23,7 @@
   - name: package
     shell: cd /opt/boxfuse-sample-java-war-hello && mvn package
 
-  - name: Transfer file from db to web
+  - name: Transfer file from deb to web
     synchronize:
         src: /usr/local
         dest: /opt/boxfuse-sample-java-war-hello/target/hello-1.0.war
