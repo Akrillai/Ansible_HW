@@ -25,9 +25,9 @@
 
   - name: Transfer file from db to web
     synchronize:
-        src: /opt/boxfuse-sample-java-war-hello/target/hello-1.0.war
-        dest: /usr/local
-    delegate_to: db
+        src: /usr/local
+        dest: /opt/boxfuse-sample-java-war-hello/target/hello-1.0.war
+    delegate_to: web
 
 
 
