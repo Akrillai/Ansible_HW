@@ -1,4 +1,36 @@
 ---
+
+- hosts: db
+
+  become: yes
+  become_method: sudo
+  remote_user: root
+
+  tasks:
+  - name: Install maven 
+    apt:
+      name: maven
+
+  - name: Install Git 
+    apt:
+      name: git
+
+  - name: Git clone
+    ansible.builtin.git:
+      repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+      dest: /opt
+
+  - name: package
+    shell: cd /opt/boxfuse-sample-java-war-hello && mvn package
+
+  - name: Transfer file from db to web
+    synchronize:
+        src: /opt/boxfuse-sample-java-war-hello/target/hello-1.0.war
+        dest: /usr/local
+    delegate_to: db
+
+
+
 - hosts: web
 
   become: yes
@@ -20,6 +52,12 @@
       src: /usr/local/apache-tomcat-9.0.44.tar.gz
       dest: /usr/local
       remote_src: yes
+
+  - name: add fusebox war
+    ansible.builtin.copy:
+      src: /usr/local/hello-1.0.war
+      dest: /usr/local/apache-tomcat-9.0.44/webapps
+
 
   - name: start tomcat services
     shell: nohup /usr/local/apache-tomcat-9.0.44/bin/startup.sh
