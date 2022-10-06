@@ -19,23 +19,29 @@
     shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
     ignore_errors: True
 
-    
+
   - name: package
     shell: cd boxfuse-sample-java-war-hello && mvn package
 
+  - name: copying war to local
+    copy:
+     src: boxfuse-sample-java-war-hello/target/hello-1.0.war
+     dest: /tmp/
+    delegate_to: localhost
 
-- hosts: localhost
-  become: yes
 
-  tasks:
-  - name: Fetch the file from the mwiapp01 to master
-    run_once: yes
-    fetch: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=buffer/ flat=yes
-    when: "{{ inventory_hostname == 'deb' }}"
+# - hosts: localhost
+#   become: yes
 
-  - name: Copy the file from master to mwiapp02
-    copy: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=/usr/local/
-    when: "{{ inventory_hostname == 'web' }}"
+  # tasks:
+  # - name: Fetch the file from the mwiapp01 to master
+  #   run_once: yes
+  #   fetch: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=buffer/ flat=yes
+  #   when: "{{ inventory_hostname == 'deb' }}"
+
+  # - name: Copy the file from master to mwiapp02
+  #   copy: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=/usr/local/
+  #   when: "{{ inventory_hostname == 'web' }}"
 
 
   # - name: Transfer file from deb to web
@@ -52,6 +58,14 @@
   remote_user: root
 
   tasks:
+
+  - name: Copy a "sudoers" file on the remote machine for editing
+    copy:
+      src: /tmp/hello-1.0.war
+      dest: /usr/local
+      remote_src: yes 
+
+
   - name: Install OpenJDK
     apt:
       name: openjdk-11-jre-headless
