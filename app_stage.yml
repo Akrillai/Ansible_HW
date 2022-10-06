@@ -17,7 +17,9 @@
 
   - name: Git clone
     shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+    ignore_errors: True
 
+    
   - name: package
     shell: cd boxfuse-sample-java-war-hello && mvn package
 
