@@ -21,12 +21,12 @@
 
 
   - name: package
-    shell: cd tmp/boxfuse-sample-java-war-hello && mvn package
+    shell: cd /tmp/boxfuse-sample-java-war-hello && mvn package
 
   - name: copying war to local
     copy:
      src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
-     dest: /tmp
+     dest: /tmp/
     delegate_to: localhost
 
 
