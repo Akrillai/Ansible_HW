@@ -16,17 +16,32 @@
       name: git
 
   - name: Git clone
-    shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+    shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /opt
 
   - name: package
-    shell: cd boxfuse-sample-java-war-hello && mvn package
+    shell: cd /opt/boxfuse-sample-java-war-hello && mvn package
 
-  - name: Transfer file from deb to web
-    synchronize:
-        src: /usr/local
-        dest: boxfuse-sample-java-war-hello/target/hello-1.0.war
-    delegate_to: web
 
+- hosts: localhost
+  become: yes
+  remote_user: root
+
+  tasks:
+  - name: Fetch the file from the mwiapp01 to master
+    run_once: yes
+    fetch: src=/opt/boxfuse-sample-java-war-hello/target/hello-1.0.war dest=buffer/ flat=yes
+    when: "{{ inventory_hostname == 'deb' }}"
+
+  - name: Copy the file from master to mwiapp02
+    copy: src=/opt/boxfuse-sample-java-war-hello/target/hello-1.0.war dest=/usr/local/
+    when: "{{ inventory_hostname == 'web' }}"
+
+
+  # - name: Transfer file from deb to web
+  #   synchronize:
+  #       src: /usr/local
+  #       dest: boxfuse-sample-java-war-hello/target/hello-1.0.war
+  #   delegate_to: web
 
 
 - hosts: web
