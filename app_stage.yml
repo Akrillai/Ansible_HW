@@ -15,8 +15,8 @@
     apt:
       name: git
 
-  - name: Git clone
-    shell: cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /tmp
+  - name: Git clone and cd
+    shell: cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
     ignore_errors: True
 
 
