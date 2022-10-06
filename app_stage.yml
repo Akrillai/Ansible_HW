@@ -15,19 +15,17 @@
     apt:
       name: git
 
-  - name: Clone a github repository
-    git:
-      repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-      dest: /usr/local/
-      update: yes
+  - name: Git clone
+    shell: cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /tmp
+    ignore_errors: True
 
 
   - name: package
-    shell: cd /usr/local/boxfuse-sample-java-war-hello && mvn package
+    shell: cd tmp/boxfuse-sample-java-war-hello && mvn package
 
   - name: copying war to local
     copy:
-     src: /usr/local/boxfuse-sample-java-war-hello/target/hello-1.0.war
+     src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
      dest: /tmp
     delegate_to: localhost
 
