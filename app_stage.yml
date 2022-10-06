@@ -18,15 +18,15 @@
   - name: Git clone
     ansible.builtin.git:
       repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
-      dest: /src/ansible-examples
+      dest: .
 
   - name: package
-    shell: cd /src/ansible-examples/boxfuse-sample-java-war-hello && mvn package
+    shell: cd boxfuse-sample-java-war-hello && mvn package
 
   - name: Transfer file from deb to web
     synchronize:
         src: /usr/local
-        dest: /src/ansible-examples/boxfuse-sample-java-war-hello/target/hello-1.0.war
+        dest: boxfuse-sample-java-war-hello/target/hello-1.0.war
     delegate_to: web
 
 
