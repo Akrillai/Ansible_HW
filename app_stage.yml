@@ -64,8 +64,6 @@
     copy:
       src: /tmp/hello-1.0.war
       dest: /usr/local
-      remote_src: yes 
-
 
   - name: Install OpenJDK
     apt:
