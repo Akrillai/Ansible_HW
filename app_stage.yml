@@ -84,7 +84,7 @@
     ansible.builtin.copy:
       src: /usr/local/hello-1.0.war
       dest: /usr/local/apache-tomcat-9.0.44/webapps
-
+      remote_src: yes
 
   - name: start tomcat services
     shell: nohup /usr/local/apache-tomcat-9.0.44/bin/startup.sh
