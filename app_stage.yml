@@ -16,9 +16,7 @@
       name: git
 
   - name: Git clone
-    ansible.builtin.git:
-      repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
-      dest: .
+    shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
 
   - name: package
     shell: cd boxfuse-sample-java-war-hello && mvn package
