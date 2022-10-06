@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: web
 
   become: yes
   become_method: sudo
@@ -61,3 +61,4 @@
       name: tomcat
       state: started
       enabled: true
+      daemon_reload: true
