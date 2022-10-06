@@ -16,17 +16,17 @@
       name: git
 
   - name: Git clone
-    shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+    shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /tmp
     ignore_errors: True
 
 
   - name: package
-    shell: cd boxfuse-sample-java-war-hello && mvn package
+    shell: cd tmp/boxfuse-sample-java-war-hello && mvn package
 
   - name: copying war to local
     copy:
-     src: boxfuse-sample-java-war-hello/target/hello-1.0.war
-     dest: /tmp/
+     src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
+     dest: /tmp
     delegate_to: localhost
 
 
