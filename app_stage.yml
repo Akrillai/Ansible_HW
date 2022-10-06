@@ -27,6 +27,8 @@
     ansible.builtin.fetch:
       src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       dest: /tmp/
+      flat: yes
+
 
 
 # - hosts: localhost
