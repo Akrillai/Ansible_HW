@@ -1,6 +1,6 @@
 ---
 
-- hosts: deb
+- hosts: 18.132.17.140
   become: true
   # become_method: sudo
   # remote_user: root
@@ -46,7 +46,7 @@
       register: fetch_status
 
 
-- hosts: web
+- hosts: 13.41.240.138 
   become: yes
   # become_method: sudo
   # remote_user: root
