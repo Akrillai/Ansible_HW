@@ -1,73 +1,68 @@
 ---
 
 - hosts: deb
-
-  become: yes
-  become_method: sudo
-  remote_user: root
+  become: true
+  # become_method: sudo
+  # remote_user: root
 
   tasks:
   - name: Install maven 
     apt:
       name: maven
+      state: present
+      update_cache: true
 
   - name: Install Git 
     apt:
       name: git
+      state: present
+      update_cache: true
 
   - name: Git clone and cd
     shell: cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
     ignore_errors: True
 
 
-  - name: package
-    shell: cd /tmp/boxfuse-sample-java-war-hello && mvn package
+  - name: Git Clone boxfuse
+    git:
+      repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+      dest: /tmp
+      clone: true
+      update: true
+    register: git_status
+
+  - name: Maven when cloned ok
+    shell:
+      chdir: /tmp/boxfuse-sample-java-war-hello
+      cmd: mvn package
+    when: git_status.changed
+    register: build_status
 
   - name: fetch war
     ansible.builtin.fetch:
       src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       dest: /tmp/
-      flat: yes
-
-
-
-# - hosts: localhost
-#   become: yes
-
-  # tasks:
-  # - name: Fetch the file from the mwiapp01 to master
-  #   run_once: yes
-  #   fetch: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=buffer/ flat=yes
-  #   when: "{{ inventory_hostname == 'deb' }}"
-
-  # - name: Copy the file from master to mwiapp02
-  #   copy: src=boxfuse-sample-java-war-hello/target/hello-1.0.war dest=/usr/local/
-  #   when: "{{ inventory_hostname == 'web' }}"
-
-
-  # - name: Transfer file from deb to web
-  #   synchronize:
-  #       src: /usr/local
-  #       dest: boxfuse-sample-java-war-hello/target/hello-1.0.war
-  #   delegate_to: web
+      flat: true
+      register: fetch_status
 
 
 - hosts: web
-
   become: yes
-  become_method: sudo
-  remote_user: root
+  # become_method: sudo
+  # remote_user: root
 
   tasks:
 
-  - name: Copy a "sudoers" file on the remote machine for editing
-    copy:
-      src: /tmp/hello-1.0.war
-      dest: /usr/local
+  # - name: Copy a "sudoers" file on the remote machine for editing
+  #   copy:
+  #     src: /tmp/hello-1.0.war
+  #     dest: /usr/local
 
   - name: Install OpenJDK
     apt:
       name: openjdk-11-jre-headless
+      state: present
+      update_cache: true
 
   - name: download tomcat server packages
     get_url:
@@ -82,9 +77,13 @@
 
   - name: add fusebox war
     ansible.builtin.copy:
-      src: /usr/local/hello-1.0.war
+      src: /tmp/hello-1.0.war
       dest: /usr/local/apache-tomcat-9.0.44/webapps
-      remote_src: yes
 
   - name: start tomcat services
     shell: nohup /usr/local/apache-tomcat-9.0.44/bin/startup.sh
+
+  - name: start tomcat services
+    shell:
+      chdir: /usr/local/apache-tomcat-9.0.44/bin/startup.sh
+      cmd: nohup
