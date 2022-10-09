@@ -21,7 +21,7 @@
   - name: Git Clone boxfuse
     git:
       repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-      dest: /tmp
+      dest: /tmp/
       clone: true
       update: true
     register: git_status
@@ -34,7 +34,7 @@
     register: build_status
 
   - name: fetch war
-    ansible.builtin.fetch:
+    fetch:
       src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       dest: /tmp/
       flat: true
@@ -71,7 +71,7 @@
       remote_src: yes
 
   - name: add fusebox war
-    ansible.builtin.copy:
+    copy:
       src: /tmp/hello-1.0.war
       dest: /usr/local/apache-tomcat-9.0.44/webapps
 
