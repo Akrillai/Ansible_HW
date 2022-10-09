@@ -19,21 +19,21 @@
   - name: Git Clone boxfuse
     git:
       repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-      dest: /tmp/
+      dest: /tmp/java-app
       clone: true
       update: true
     register: git_status
 
   - name: Maven when cloned ok
     shell:
-      chdir: /tmp/boxfuse-sample-java-war-hello
+      chdir: /tmp/java-app/boxfuse-sample-java-war-hello
       cmd: mvn package
     when: git_status.changed
     register: build_status
 
   - name: fetch war
     fetch:
-      src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
+      src: /tmp/java-app/boxfuse-sample-java-war-hello/target/hello-1.0.war
       dest: /tmp/
       flat: true
     when: build_status is succeeded
