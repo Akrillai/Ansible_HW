@@ -18,11 +18,6 @@
       state: present
       update_cache: true
 
-  - name: Git clone and cd
-    shell: cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-    ignore_errors: True
-
-
   - name: Git Clone boxfuse
     git:
       repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
