@@ -2,8 +2,6 @@
 
 - hosts: staging
   become: true
-  # become_method: sudo
-  # remote_user: root
 
   tasks:
   - name: Install maven 
@@ -24,11 +22,13 @@
       dest: /tmp/
       clone: true
       update: true
+    register: git_status
 
   - name: Maven when cloned ok
     shell:
       chdir: /tmp/boxfuse-sample-java-war-hello
       cmd: mvn package
+    when: git_status.changed
     register: build_status
 
   - name: fetch war
@@ -36,20 +36,11 @@
       src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       dest: /tmp/
       flat: true
-      register: fetch_status
-
+    when: build_status is succeeded
 
 - hosts: deploy
   become: yes
-  # become_method: sudo
-  # remote_user: root
-
   tasks:
-
-  # - name: Copy a "sudoers" file on the remote machine for editing
-  #   copy:
-  #     src: /tmp/hello-1.0.war
-  #     dest: /usr/local
 
   - name: Install OpenJDK
     apt:
