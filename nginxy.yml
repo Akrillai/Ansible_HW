@@ -4,16 +4,14 @@
   become: true
 
   tasks:
-    - name: ensure nginx is at the latest version
-      apt: name=nginx state=latest
-    - name: start nginx
-      service:
-          name: nginx
-          state: started
+    - name: Ensure nginx package is present
+      apt:
+        name: nginx
+        state: present
 
 
     - name: Add Date
       lineinfile:
-        path: /usr/share/nginx/html/index.html
+        path: /var/www/html/index.nginx-debian.html
         regexp: '^<h1>Welcome to nginx!</h1>'
         line: '<p><script> document.write(new Date().toLocaleDateString()); </script></p>'
