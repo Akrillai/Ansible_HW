@@ -11,14 +11,9 @@
           name: nginx
           state: started
 
-    # - name: Creating a file with content
-    #   copy:
-    #     dest: index.html
-    #     content: |
-    #       <p><script> document.write(new Date().toLocaleDateString()); </script></p>
 
-
-    # - name: Insert Index Page
-    #   template:
-    #     src: index.html
-    #     dest: /usr/share/nginx/html/index.html
+    - name: Add Date
+      lineinfile:
+        path: /usr/share/nginx/html/index.html
+        regexp: '^<h1>Welcome to nginx!</h1>'
+        line: '<p><script> document.write(new Date().toLocaleDateString()); </script></p>'
