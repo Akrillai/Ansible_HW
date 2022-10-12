@@ -20,13 +20,13 @@
   shell:
     chdir: /tmp/boxfuse-hello/src/main/webapp/
     cmd: rm boxfuse.png && wget https://www.docker.com/wp-content/uploads/2022/05/Docker_Temporary_Image_Google_Blue_1080x1080_v1.png && mv Docker_Temporary_Image_Google_Blue_1080x1080_v1.png boxfuse.png
-  when: git_status.changed
+  when: git_status.ok
 
 - name: Maven when cloned ok
   shell:
     chdir: /tmp/boxfuse-hello
     cmd: mvn package
-  when: git_status.changed
+  when: git_status.ok
   register: build_status
 
 - name: Fetch the artifact file to the local machine
