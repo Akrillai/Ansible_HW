@@ -19,7 +19,7 @@
 - name: Replace original png with Docker Logo
   shell:
     chdir: /tmp/boxfuse-hello/src/main/webapp/
-    cmd: rm src/main/webapp/boxfuse.png && wget https://www.docker.com/wp-content/uploads/2022/05/Docker_Temporary_Image_Google_Blue_1080x1080_v1.png && mv Docker_Temporary_Image_Google_Blue_1080x1080_v1.png boxfuse.png
+    cmd: rm boxfuse.png && wget https://www.docker.com/wp-content/uploads/2022/05/Docker_Temporary_Image_Google_Blue_1080x1080_v1.png && mv Docker_Temporary_Image_Google_Blue_1080x1080_v1.png boxfuse.png
   when: git_status.changed
 
 - name: Maven when cloned ok
