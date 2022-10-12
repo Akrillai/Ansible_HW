@@ -23,6 +23,4 @@
       dest: /usr/local/apache-tomcat-9.0.44/webapps
       
   - name: start tomcat services
-    shell:
-      chdir: /usr/local/apache-tomcat-9.0.44/bin/
-      cmd: nohup startup.sh
+    shell: nohup /usr/local/apache-tomcat-9.0.44/bin/startup.sh
