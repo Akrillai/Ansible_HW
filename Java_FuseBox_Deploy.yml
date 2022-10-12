@@ -4,11 +4,11 @@
 - hosts: staging
   become: true
   roles:
-    - builder
+    - appbuidling
 
 
 - name: Build Java FuseBox Artifact on Tomcat
 - hosts: deploy
   become: true
   roles:
-    - webserver
+    - appdeployment
