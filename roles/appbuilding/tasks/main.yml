@@ -1,2 +1,37 @@
 ---
-# tasks file for appbuilding
+- name: Install needed packages
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: true
+  with_items:
+    - maven
+    - git
+
+- name: Git Clone boxfuse
+  git:
+    repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+    dest: /tmp/boxfuse-hello
+    clone: true
+    update: true
+  register: git_status
+
+- name: Replace original png with Docker Logo
+  shell:
+    chdir: /tmp/boxfuse-hello/src/main/webapp/
+    cmd: rm src/main/webapp/boxfuse.png && wget https://www.docker.com/wp-content/uploads/2022/05/Docker_Temporary_Image_Google_Blue_1080x1080_v1.png && mv Docker_Temporary_Image_Google_Blue_1080x1080_v1.png boxfuse.png
+  when: git_status.changed
+
+- name: Maven when cloned ok
+  shell:
+    chdir: /tmp/boxfuse-hello
+    cmd: mvn package
+  when: git_status.changed
+  register: build_status
+
+- name: Fetch the artifact file to the local machine
+  synchronize:
+    mode: pull
+    src: /tmp/boxfuse-hello/target/hello-1.0.war
+    dest: /tmp/
+  when: build_status is succeeded
