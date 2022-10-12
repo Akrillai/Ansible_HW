@@ -24,7 +24,6 @@
   shell:
     chdir: /tmp/boxfuse-hello
     cmd: mvn package
-  when: git_status.ok
   register: build_status
 
 - name: Fetch the artifact file to the local machine
