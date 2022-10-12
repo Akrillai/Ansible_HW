@@ -1,14 +1,14 @@
 ---
-
-- name: Build Java FuseBox Artifact
-- hosts: staging
-  become: true
+- name: web server configuration
+  hosts: web
+  become: yes
+ 
   roles:
-    - appbuilding
+   - appbuilding
 
+- name: db congif
+  hosts: db
+  become: yes
 
-- name: Build Java FuseBox Artifact on Tomcat
-- hosts: deploy
-  become: true
   roles:
-    - appdeployment
+   - appdeployment
