@@ -1,2 +1,4 @@
 ---
-# handlers file for appdeployment
+# handlers file for webserver
+- name: restart tomcat
+  service: name=tomcat state=restarted
