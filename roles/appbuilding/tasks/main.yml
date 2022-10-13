@@ -16,6 +16,11 @@
     update: true
     force: true
 
+- name: remove progonal logo
+  file:
+    path: /tmp/boxfuse-hello/src/main/webapp/boxfuse.png
+    state: absent
+
 - name: download Docker Logo png
   get_url:
     url: "{{png_url}}"
